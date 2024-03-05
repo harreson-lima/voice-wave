@@ -1,6 +1,6 @@
 const recordBtn = document.querySelector(".record");
 const stopBtn = document.querySelector(".stop");
-const audios = document.querySelector(".audios");
+const audiosClips = document.querySelector(".audios");
 
 
 // Checks if browser support getUserMedia
@@ -35,7 +35,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Is triggered every time the recorder is stopped, then gets all the data
     // and creates a clip element and reset the chunks for the next record
     mediaRecorder.onstop = (e) => {
-
       console.log("record stopped");
 
       const clipName = prompt("Enter a name for the sound clip");
@@ -53,7 +52,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       clipContainer.appendChild(audio);
       clipContainer.appendChild(clipLabel);
       clipContainer.appendChild(deleteBtn);
-      audios.appendChild(clipContainer);
+      audiosClips.appendChild(clipContainer);
 
       audio.controls = true;
       const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
@@ -64,8 +63,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       deleteBtn.addEventListener("click", (e) => {
         audios.removeChild(e.target.parentNode);
       });
-
-
     };
 
     mediaRecorder.ondataavailable = (e) => {
@@ -74,11 +71,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   }
 
   function onError(err) {
-     console.error(`The following erro occured ${err}`);
+    console.error(`The following erro occured ${err}`);
   }
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(onSuccess, onError);
+  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
 } else {
   console.log("getUserMedia not supported!");
 }
