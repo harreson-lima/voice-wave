@@ -2,10 +2,15 @@ const recordBtn = document.querySelector(".record");
 const stopBtn = document.querySelector(".stop");
 const audios = document.querySelector(".audios");
 
+
+// Checks if browser support getUserMedia
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  console.log("getUserMedia supported!");
+
   const constraints = { audio: true };
   let chunks = [];
 
+  // Set up MediaRecorder functions if getUserMedia is a success
   function onSuccess(stream) {
     const mediaRecorder = new MediaRecorder(stream);
 
@@ -27,6 +32,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       recordBtn.classList.remove("recording");
     });
 
+    // Is triggered every time the recorder is stopped, then gets all the data
+    // and creates a clip element and reset the chunks for the next record
     mediaRecorder.onstop = (e) => {
 
       console.log("record stopped");
@@ -69,8 +76,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   function onError(err) {
      console.error(`The following erro occured ${err}`);
   }
-
-  console.log("getUserMedia supported!");
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then(onSuccess, onError);
