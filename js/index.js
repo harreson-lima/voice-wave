@@ -4,37 +4,24 @@ const recordBtn = document.querySelector(".record");
 const stopBtn = document.querySelector(".stop");
 const audiosClips = document.querySelector(".audios");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const indexedDB = window.indexedDB ;
+const indexedDB = window.indexedDB;
 
 if (!indexedDB) {
   console.log("IndexedDB could not be found in this browser.");
 }
 
-const openOrCreateDB  = indexedDB.open("AudiosDatabase", 1);
+// Open indexedDB
+const openOrCreateDB = indexedDB.open("AudiosDatabase", 1);
 
 openOrCreateDB.onerror = (e) => {
   console.error(`A error ocurred with indexedDB: ${e}`);
-}
+};
 
 openOrCreateDB.onsuccess = () => {
   console.log("Successfully opened DB");
   db = openOrCreateDB.result;
   showAudioClips();
-}
+};
 
 openOrCreateDB.onupgradeneeded = (e) => {
   db = e.target.result;
@@ -43,48 +30,33 @@ openOrCreateDB.onupgradeneeded = (e) => {
     console.error("Error loading database.");
   };
 
-  const table = db.createObjectStore("Audios", {keyPath: "id", autoIncrement: true});
-  
-  table.createIndex("audio", "audio", {unique: false});
-  table.createIndex("label", "label", {unique: false});
+  const table = db.createObjectStore("Audios", {
+    keyPath: "id",
+    autoIncrement: true,
+  });
+
+  table.createIndex("audio", "audio", { unique: false });
+  table.createIndex("label", "label", { unique: false });
 };
 
-
-
-
-
-
-
-
-
-
+// Add a new audio to the Database
 function addAudio(blob, label) {
-
-  const newAudio = {audio: blob, label: label}
+  const newAudio = { audio: blob, label: label !== "" ? label : "Audio_label" };
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.add(newAudio);
 }
 
-
-
-
-
-
-
-
-
+// Get the audios from the database and display it
 function showAudioClips() {
   audiosClips.innerHTML = "";
 
   const objectStore = db.transaction("Audios").objectStore("Audios");
 
-  objectStore.openCursor().addEventListener("success", (e) => {
-
+  objectStore.openCursor().onsuccess = (e) => {
     const pointer = e.target.result;
 
     if (pointer) {
-
       const clipContainer = document.createElement("article");
       const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
@@ -93,57 +65,46 @@ function showAudioClips() {
       clipContainer.classList.add("clip");
       clipContainer.setAttribute("data-id", pointer.value.id);
       clipLabel.innerHTML = pointer.value.label;
+      clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
       deleteBtn.innerHTML = "Delete";
 
-      clipContainer.appendChild(audio);
       clipContainer.appendChild(clipLabel);
+      clipContainer.appendChild(audio);
       clipContainer.appendChild(deleteBtn);
       audiosClips.appendChild(clipContainer);
 
       audio.controls = true;
       const audioURL = window.URL.createObjectURL(pointer.value.audio);
       audio.src = audioURL;
-    
-      // c.appendChild(deleteBtn);
-      // deleteBtn.textContent = "Remove";
+
       deleteBtn.addEventListener("click", deleteAudio);
       clipLabel.addEventListener("click", updateAudioLabel);
       pointer.continue();
     }
-  });
+  };
 }
-
-
-
-
-
-
 
 function deleteAudio(e) {
   const audioId = parseInt(e.target.parentNode.getAttribute("data-id"));
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.delete(audioId);
-  transaction.addEventListener("complete", () => {
+  transaction.oncomplete = () => {
     e.target.parentNode.parentNode.removeChild(e.target.parentNode);
     console.log("audio removed!");
-  })
-  transaction.addEventListener("error", () => {
+  };
+  transaction.onerror = () => {
     console.error("Delete transaction error");
-  })
-  
+  };
 }
-
-
-
-
-
-
-
 
 function updateAudioLabel(e) {
   const newlabel = prompt("Enter a new name for the sound clip");
+
+  if (newlabel === "") {
+    return;
+  }
 
   const audioId = parseInt(e.target.parentNode.getAttribute("data-id"));
   const transaction = db.transaction(["Audios"], "readwrite");
@@ -151,30 +112,21 @@ function updateAudioLabel(e) {
 
   const query = objectStore.get(audioId);
 
-  query.addEventListener("success", () => {
+  query.onsuccess = () => {
     const newAudio = query.result;
     newAudio.label = newlabel;
 
     const updateAudio = objectStore.put(newAudio);
 
-    updateAudio.addEventListener("success", () => {
+    updateAudio.onsuccess = () => {
       showAudioClips();
-    });
+    };
 
-    updateAudio.addEventListener("error", () => {
+    updateAudio.onerror = () => {
       console.error("Update transaction error");
-    });
-  });
-  
+    };
+  };
 }
-
-
-
-
-
-
-
-
 
 // Checks if browser support getUserMedia
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -212,7 +164,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       const label = prompt("Enter a name for the sound clip");
 
       const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
-      
+
       addAudio(blob, label);
       chunks = [];
 
