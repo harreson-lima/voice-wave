@@ -1,3 +1,63 @@
+// Audio visualiser
+const canvas = document.querySelector(".visualizer");
+const canvasCtx = canvas.getContext("2d");
+
+function visualizer(stream) {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+  const HEIGHT = canvas.height;
+  const WIDTH = canvas.width;
+
+  const source = audioContext.createMediaStreamSource(stream);
+  const analyser = audioContext.createAnalyser();
+  analyser.fftSize = 2048;
+
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+  const barWidth = WIDTH / bufferLength + 10;
+  source.connect(analyser);
+
+  canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+  draw();
+
+  function draw() {
+    drawVisual = requestAnimationFrame(draw);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    canvasCtx.fillStyle = "#11161D";
+    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    let barHeight;
+    let x = 10;
+    let y;
+    const grd = canvasCtx.createLinearGradient(180, 0, 180, 180);
+    grd.addColorStop(0.5, "#1FCEE5");
+    grd.addColorStop(1, "#8512E2");
+    for (let i = 0; i < bufferLength * 0.041; i++) {
+      barHeight = dataArray[i] / 2;
+      barHeight = barHeight > 10 ? barHeight : 10;
+      y = HEIGHT - barHeight / 2 - 150;
+
+      canvasCtx.beginPath();
+      canvasCtx.fillStyle = grd;
+      canvasCtx.roundRect(
+        x,
+        y,
+        barWidth,
+        barHeight,
+        200
+      );
+      canvasCtx.fill();
+
+      x += barWidth + 12;
+    }
+  }
+}
+
+
+// Database
 let db;
 
 const recordBtn = document.querySelector(".record");
@@ -41,7 +101,7 @@ openOrCreateDB.onupgradeneeded = (e) => {
 
 // Add a new audio to the Database
 function addAudio(blob, label) {
-  const newAudio = { audio: blob, label: label !== "" ? label : "Audio_label" };
+  const newAudio = { audio: blob, label: (label !== "" && label !== null) ? label : "Audio_label" };
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.add(newAudio);
@@ -102,7 +162,7 @@ function deleteAudio(e) {
 function updateAudioLabel(e) {
   const newlabel = prompt("Enter a new name for the sound clip");
 
-  if (newlabel === "") {
+  if (newlabel === "" || newlabel === null) {
     return;
   }
 
@@ -138,6 +198,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   // Set up MediaRecorder functions if getUserMedia is a success
   function onSuccess(stream) {
     const mediaRecorder = new MediaRecorder(stream);
+
+    visualizer(stream);
 
     recordBtn.addEventListener("click", () => {
       mediaRecorder.start();

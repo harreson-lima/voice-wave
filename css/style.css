@@ -4,6 +4,7 @@
   --base-clr: #11161D;
   --primary-clr: #8512E2;
   --accent-clr: #1FCEE5;
+  --neutral-crl: #F3F3F3;
 }
 
 * {
@@ -15,4 +16,8 @@
 
 .recording svg{
   fill: red;
+}
+
+.visualizer {
+  padding: 1rem;
 }
