@@ -1,20 +1,21 @@
 // Audio visualiser
+const containerSize = document.querySelector(".recorder");
 const canvas = document.querySelector(".visualizer");
 const canvasCtx = canvas.getContext("2d");
 
 function visualizer(stream) {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
+  canvas.width = containerSize.offsetWidth;
   const HEIGHT = canvas.height;
-  const WIDTH = canvas.width;
-
+  let WIDTH = canvas.width;
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   const source = audioContext.createMediaStreamSource(stream);
   const analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-
+  
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
   const barWidth = WIDTH / bufferLength + 10;
+  
   source.connect(analyser);
 
   canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -22,15 +23,17 @@ function visualizer(stream) {
   draw();
 
   function draw() {
+    // console.log(1);
+    
     drawVisual = requestAnimationFrame(draw);
 
     analyser.getByteFrequencyData(dataArray);
 
-    canvasCtx.fillStyle = "#11161D";
+    canvasCtx.fillStyle = "#0b0f14";
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     let barHeight;
-    let x = 10;
+    let x = WIDTH / 4;
     let y;
     const grd = canvasCtx.createLinearGradient(180, 0, 180, 180);
     grd.addColorStop(0.5, "#1FCEE5");
@@ -206,6 +209,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       console.log(mediaRecorder.state);
       console.log("start recording");
       recordBtn.classList.add("recording");
+      canvas.style.display = "block";
       recordBtn.disabled = true;
       stopBtn.disabled = false;
     });
@@ -214,6 +218,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log("stop recording");
+      canvas.style.display = "none";
       stopBtn.disabled = true;
       recordBtn.disabled = false;
       recordBtn.classList.remove("recording");
