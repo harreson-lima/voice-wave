@@ -4,7 +4,7 @@ const canvas = document.querySelector(".visualizer");
 const canvasCtx = canvas.getContext("2d");
 
 function visualizer(stream) {
-  canvas.width = containerSize.offsetWidth;
+  canvas.width = containerSize.offsetWidth * 0.8;
   const HEIGHT = canvas.height;
   let WIDTH = canvas.width;
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -14,7 +14,7 @@ function visualizer(stream) {
   
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
-  const barWidth = WIDTH / bufferLength + 10;
+  const barWidth = WIDTH / bufferLength + 8;
   
   source.connect(analyser);
 
@@ -33,28 +33,23 @@ function visualizer(stream) {
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     let barHeight;
-    let x = WIDTH / 4;
+    let x = 0;
     let y;
     const grd = canvasCtx.createLinearGradient(180, 0, 180, 180);
     grd.addColorStop(0.5, "#1FCEE5");
     grd.addColorStop(1, "#8512E2");
-    for (let i = 0; i < bufferLength * 0.041; i++) {
-      barHeight = dataArray[i] / 2;
-      barHeight = barHeight > 10 ? barHeight : 10;
-      y = HEIGHT - barHeight / 2 - 150;
+    for (let i = 0; i < bufferLength; i++) {
+      if((x + 8) < WIDTH) {
+        barHeight = dataArray[i] / 2;
+        barHeight = barHeight > 10 ? barHeight : 10;
+        y = HEIGHT - barHeight / 2 - 150;
 
-      canvasCtx.beginPath();
-      canvasCtx.fillStyle = grd;
-      canvasCtx.roundRect(
-        x,
-        y,
-        barWidth,
-        barHeight,
-        200
-      );
-      canvasCtx.fill();
-
-      x += barWidth + 12;
+        canvasCtx.beginPath();
+        canvasCtx.fillStyle = grd;
+        canvasCtx.roundRect(x, y, barWidth, barHeight, 200);
+        canvasCtx.fill();
+        x += barWidth + 8;
+      }
     }
   }
 }
@@ -124,6 +119,7 @@ function showAudioClips() {
       const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
       const deleteBtn = document.createElement("button");
+      const shareBtn = document.createElement("button");
 
       clipContainer.classList.add("clip");
       clipContainer.setAttribute("data-id", pointer.value.id);
@@ -131,10 +127,12 @@ function showAudioClips() {
       clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
       deleteBtn.innerHTML = "Delete";
+      shareBtn.innerHTML = "Share";
 
       clipContainer.appendChild(clipLabel);
       clipContainer.appendChild(audio);
       clipContainer.appendChild(deleteBtn);
+      clipContainer.appendChild(shareBtn);
       audiosClips.appendChild(clipContainer);
 
       audio.controls = true;
@@ -142,6 +140,7 @@ function showAudioClips() {
       audio.src = audioURL;
 
       deleteBtn.addEventListener("click", deleteAudio);
+      shareBtn.addEventListener("click", () => {shareAudio(pointer.value.label, pointer.value.audio);});
       clipLabel.addEventListener("click", updateAudioLabel);
       pointer.continue();
     }
@@ -160,6 +159,25 @@ function deleteAudio(e) {
   transaction.onerror = () => {
     console.error("Delete transaction error");
   };
+}
+
+function shareAudio(title, audio) {
+  console.log(audio)
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      url: audio
+    })
+    .then(() => {
+      console.log("Shared successful!");
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+  }
+  else {
+    alert("Your system doesn't support sharing these files.");
+  }
 }
 
 function updateAudioLabel(e) {
@@ -230,7 +248,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       console.log("record stopped");
       const label = prompt("Enter a name for the sound clip");
 
-      const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+      const blob = new Blob(chunks, { type: "audio/mp3; codecs=opus" });
 
       addAudio(blob, label);
       chunks = [];

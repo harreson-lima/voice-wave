@@ -2,7 +2,7 @@
 
 :root {
   --base-clr: #0b0f14;
-  --primary-clr: #8512E2;
+  --primary-clr: #8e48fd;
   --accent-clr: #1FCEE5;
   --neutral-crl: #F3F3F3;
   --scroll-thumb-clr: #161e27;
@@ -53,7 +53,7 @@ body {
 
 .container {
   max-width: 1300px;
-  /* border: 1px solid red; */
+  border: 1px solid red;
   margin-inline: auto;
   padding-inline: 1.1rem;
 }
@@ -100,9 +100,9 @@ body {
     font-size: var(--fs-100);
   }
 
-  /* .hero-section {
+  .hero-section {
     flex-direction: column;
-  } */
+  }
 }
 
 /* Hero Section */
