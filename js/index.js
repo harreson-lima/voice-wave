@@ -236,7 +236,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log("stop recording");
-      canvas.style.display = "none";
+      canvas.style.visibility = "hidden";
       stopBtn.disabled = true;
       recordBtn.disabled = false;
       recordBtn.classList.remove("recording");
