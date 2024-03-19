@@ -54,7 +54,7 @@ body {
 }
 
 .container {
-  max-width: minmax(100vw, 1300px);
+  max-width: clamp(300px, 100vw , 1300px);
   /* border: 1px solid red; */
   margin-inline: auto;
   padding-inline: 1.1rem;
@@ -62,6 +62,13 @@ body {
 
 .full-height {
   min-height: 100dvh;
+}
+
+.divider {
+  border: 1px solid var(--base-ligth-clr);
+  max-width: 100%;
+  margin-inline: auto;
+  margin-block: 3rem;
 }
 
 /* Primary Header */
@@ -115,6 +122,7 @@ body {
     position: fixed;
     inset: 0 0 0 0rem;
     flex-direction: column;
+    justify-content: center;
     background-color: var(--base-ligth-clr);
     padding-inline: 2rem;
     padding-block: clamp(10rem, 10vh, 20rem);
@@ -129,6 +137,7 @@ body {
   .primary-nav li {
     width: 100%;
     text-align: center;
+    font-weight: 700;
   }
 
   .menu-item {
@@ -148,13 +157,6 @@ body {
     background-repeat: no-repeat;
     width: 2rem;
     aspect-ratio: 1;
-  }
-
-  @supports (backdrop-filter: blur(10.5rem)) {
-    .primary-nav {
-      background-color: var(--scroll-thumb-hover);
-      backdrop-filter: blur(0.5rem);
-    }
   }
 
   .hamburger[aria-expanded="true"] {
@@ -180,6 +182,7 @@ body {
   font-weight: 900; 
   color: var(--primary-clr);
   padding-top: 2.5rem;
+  text-wrap: balance;
 }
 
 .hero-info p {
@@ -227,7 +230,6 @@ body {
   flex-direction: column;
   align-items: center;
   padding-block: 9rem;
-  border-radius: 1.2rem 1.2rem 0 0;
 }
 
 .main-application > * {
@@ -247,6 +249,50 @@ h2 {
   justify-content: center;
   align-items: center;
 }
+
+/* About Section */
+
+.about-section {
+  padding-block: 2rem;
+}
+
+.about-title-2 {
+  font-size: calc(var(--fs-500) - 0.5rem);
+  font-weight: 900;
+  color: var(--primary-clr);
+  padding-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.about-title-3 {
+  font-size: var(--fs-300);
+  padding-block: 0.5rem;
+}
+
+
+.about-info {
+  font-size: var(--fs-100);
+  color: var(--text-clr);
+  margin-bottom: 1rem;
+  line-height: 1.5rem;
+}
+
+.about-list {
+  padding-inline: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-item {
+  font-size: var(--fs-100);
+  color: var(--text-clr);
+  padding-block: 0.8rem;
+}
+
+.about-item::marker {
+  color: var(--accent-clr);
+  font-size: 1.5rem;
+}
+
 /* Footer */
 
 footer {

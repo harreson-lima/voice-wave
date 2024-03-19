@@ -10,8 +10,9 @@
   <script src="js/menu.js" defer></script>
 </head>
 <body>
-  <header id="home">
-    <div class="container primary-header">
+  <div class="container">
+    <header id="home">
+    <div class="primary-header">
       <a href="#" class="logo">Voice<span>Wave</span></a>
       <button class="hamburger" data-visible="false" aria-controls="primary-nav" aria-expanded="false">
       </button>
@@ -26,7 +27,7 @@
   </header>
 
   <section class="full-height">
-    <div class="container hero-section">
+    <div class="hero-section">
       <div class="hero-info">
         <h1 class="hero-title">Deixe sua voz ser ouvida.</h1>
         <p>Onde a inovação se encontra com a comunicação de forma impecável. 
@@ -44,8 +45,10 @@
     </div>
   </section>
 
+  <hr class="divider">
+
   <section class="full-height">
-    <div class="container main-application" id="main-application">
+    <div class="main-application" id="main-application">
       <h2>Record Here</h2>
       <section class="recorder">
         <canvas class="visualizer" width="500px" height="300px" ></canvas>
@@ -62,32 +65,39 @@
           </button>
         </div>
       </section>
+      <section class="cover-app">
+        <img src="./assets/microphone.svg" alt="">
+      </section>
 
       <section class="audios"></section>
     </div>
   </section>
-  <section id="about" class="container about-section full-height">
-    <h2>About Us</h2><br>
-    <h3>About VoiceWave?</h3> <br>
-    <p>Welcome to VoiceWave – a pinnacle in audio excellence! We pride ourselves on revolutionizing the art of voice recording, where innovation meets the essence of seamless communication.</p><br>
-    <h3>Our Commitment:</h3><br>
-    <p>At VoiceWave, we are committed to delivering an unparalleled audio experience. Our cutting-edge technology captures the nuances of sound with clarity and precision, ensuring that every recording is a masterpiece.</p><br>
-    <h3>Innovation in Design:</h3><br>
-    <p>Our sleek and intuitive design reflects our dedication to user-friendly experiences. With VoiceWave, effortlessly transform thoughts into recorded brilliance. The future of voice recording technology is here, and it sounds extraordinary.</p><br>
-    <h3>Why VoiceWave:</h3><br>
-    <ul>
-      <li>Crystal-clear sound quality.</li>
-      <li>Intuitive design for easy use.</li>
-      <li>Advanced features for a superior recording experience.</li>
-      <li>Elevate your audio journey with VoiceWave.</li>
-    </ul><br>
-    <p>Join us in shaping the future of voice recording – where each wave is a testament to innovation and clarity.</p><br>
-    <p>VoiceWave - Elevate Your Sound.</p>
+
+  <hr class="divider">
+
+  <section id="about" class="about-section full-height">
+    <h2 class="about-title-2">About Us</h2>
+    <h3 class="about-title-3">About VoiceWave?</h3> 
+    <p class="about-info">Welcome to VoiceWave – a pinnacle in audio excellence! We pride ourselves on revolutionizing the art of voice recording, where innovation meets the essence of seamless communication.</p>
+    <h3 class="about-title-3">Our Commitment:</h3>
+    <p class="about-info">At VoiceWave, we are committed to delivering an unparalleled audio experience. Our cutting-edge technology captures the nuances of sound with clarity and precision, ensuring that every recording is a masterpiece.</p>
+    <h3 class="about-title-3">Innovation in Design:</h3>
+    <p class="about-info">Our sleek and intuitive design reflects our dedication to user-friendly experiences. With VoiceWave, effortlessly transform thoughts into recorded brilliance. The future of voice recording technology is here, and it sounds extraordinary.</p>
+    <h3 class="about-title-3">Why VoiceWave:</h3>
+    <ul class="about-list">
+      <li class="about-item">Crystal-clear sound quality.</li>
+      <li class="about-item">Intuitive design for easy use.</li>
+      <li class="about-item">Advanced features for a superior recording experience.</li>
+      <li class="about-item">Elevate your audio journey with VoiceWave.</li>
+    </ul>
+    <p class="about-info">Join us in shaping the future of voice recording – where each wave is a testament to innovation and clarity.
+      <br>VoiceWave - Elevate Your Sound.
+    </p>
   </section>
-  <footer>
-    <div class="container">
-      <p>© Harreson Lima - 2024.</p>
-    </div>
-  </footer>
+</div>
+<footer>
+    <p>© Harreson Lima - 2024.</p>
+</footer>
+  
 </body>
 </html>
