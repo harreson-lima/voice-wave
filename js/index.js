@@ -1,17 +1,24 @@
 // Variables
-  // Visualizer
+// Visualizer
 const containerSize = document.querySelector(".recorder");
 const canvas = document.querySelector(".visualizer");
 const canvasCtx = canvas.getContext("2d");
-  // App
+// Audio
 const recorderSection = document.querySelector(".recorder");
 const appCoverSection = document.querySelector(".app-cover");
 const recordBtn = document.querySelector(".record");
+const pauseBtn = document.querySelector(".pause");
+const resumeBtn = document.querySelector(".resume")
 const stopBtn = document.querySelector(".stop");
 const audiosClips = document.querySelector(".audios");
-  // DB
+// DB
 let db;
 const indexedDB = window.indexedDB;
+// Duration
+const duration = document.querySelector(".duration");
+let seconds = 0;
+let minutes = 0;
+let crono;
 
 // Audio visualiser
 
@@ -23,11 +30,11 @@ function visualizer(stream) {
   const source = audioContext.createMediaStreamSource(stream);
   const analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-  
+
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
   const barWidth = WIDTH / bufferLength + 8;
-  
+
   source.connect(analyser);
 
   canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -36,7 +43,7 @@ function visualizer(stream) {
 
   function draw() {
     // console.log(1);
-    
+
     drawVisual = requestAnimationFrame(draw);
 
     analyser.getByteFrequencyData(dataArray);
@@ -47,14 +54,14 @@ function visualizer(stream) {
     let barHeight;
     let x = 0;
     let y;
-    const grd = canvasCtx.createLinearGradient(180, 0, 180, 180);
+    const grd = canvasCtx.createLinearGradient(100, 0, 100, 100);
     grd.addColorStop(0.5, "#1FCEE5");
     grd.addColorStop(1, "#8512E2");
     for (let i = 0; i < bufferLength; i++) {
-      if((x + 8) < WIDTH) {
+      if (x + 8 < WIDTH) {
         barHeight = dataArray[i] / 2;
         barHeight = barHeight > 10 ? barHeight : 10;
-        y = HEIGHT - barHeight / 2 - 150;
+        y = HEIGHT - barHeight / 2 - 75;
 
         canvasCtx.beginPath();
         canvasCtx.fillStyle = grd;
@@ -65,7 +72,6 @@ function visualizer(stream) {
     }
   }
 }
-
 
 // Database
 
@@ -104,7 +110,10 @@ openOrCreateDB.onupgradeneeded = (e) => {
 
 // Add a new audio to the Database
 function addAudio(blob, label) {
-  const newAudio = { audio: blob, label: (label !== "" && label !== null) ? label : "Audio_label" };
+  const newAudio = {
+    audio: blob,
+    label: label !== "" && label !== null ? label : "Audio_label",
+  };
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.add(newAudio);
@@ -124,7 +133,7 @@ function showAudioClips() {
       const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
       const deleteBtn = document.createElement("button");
-      const shareBtn = document.createElement("button");
+      const downloadBtn = document.createElement("a");
 
       clipContainer.classList.add("clip");
       clipContainer.setAttribute("data-id", pointer.value.id);
@@ -132,20 +141,21 @@ function showAudioClips() {
       clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
       deleteBtn.innerHTML = "Delete";
-      shareBtn.innerHTML = "Download";
+      downloadBtn.innerHTML = "Download";
+      downloadBtn.setAttribute("download", pointer.value.label);
 
       clipContainer.appendChild(clipLabel);
       clipContainer.appendChild(audio);
       clipContainer.appendChild(deleteBtn);
-      clipContainer.appendChild(shareBtn);
+      clipContainer.appendChild(downloadBtn);
       audiosClips.appendChild(clipContainer);
 
       audio.controls = true;
       const audioURL = window.URL.createObjectURL(pointer.value.audio);
       audio.src = audioURL;
+      downloadBtn.setAttribute("href", audioURL);
 
       deleteBtn.addEventListener("click", deleteAudio);
-      shareBtn.addEventListener("click", () => {shareAudio(pointer.value.label, pointer.value.audio);});
       clipLabel.addEventListener("click", updateAudioLabel);
       pointer.continue();
     }
@@ -166,24 +176,6 @@ function deleteAudio(e) {
   };
 }
 
-// function downloadAudio(title, audio) {
-//   console.log(audio)
-//   if (navigator.share) {
-//     navigator.share({
-//       title: title,
-//       url: audio
-//     })
-//     .then(() => {
-//       console.log("Shared successful!");
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     })
-//   }
-//   else {
-//     alert("Your system doesn't support sharing these files.");
-//   }
-// }
 
 function updateAudioLabel(e) {
   const newlabel = prompt("Enter a new name for the sound clip");
@@ -232,16 +224,32 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       recordBtn.classList.add("recording");
       appCoverSection.style.display = "none";
       recorderSection.style.display = "flex";
+      resumeBtn.style.display = "none";
       visualizer(stream);
-      recordBtn.disabled = true;
-      stopBtn.disabled = false;
+      startCrono();
     });
 
     stopBtn.addEventListener("click", () => {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log("stop recording");
-      recordBtn.disabled = false;
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      console.log("enter here");
+      mediaRecorder.pause();
+      pauseCrono();
+      console.log(mediaRecorder.state);
+      pauseBtn.style.display = "none";
+      resumeBtn.style.display = "flex";
+    });
+
+    resumeBtn.addEventListener("click", () => {
+      mediaRecorder.resume();
+      startCrono();
+      console.log(mediaRecorder.state);
+      resumeBtn.style.display = "none";
+      pauseBtn.style.display = "flex";
     });
 
     // Is triggered every time the recorder is stopped, then gets all the data
@@ -256,6 +264,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       chunks = [];
       appCoverSection.style.display = "flex";
       recorderSection.style.display = "none";
+      resetCrono();
       showAudioClips();
     };
 
@@ -270,4 +279,36 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
 } else {
   console.log("getUserMedia not supported!");
+}
+
+function startCrono() {
+  pauseCrono();
+  crono = setInterval(() => {
+    timer();
+  }, 1000);
+}
+
+function pauseCrono() {
+  clearInterval(crono);
+}
+
+function resetCrono() {
+  pauseCrono();
+  seconds = 0;
+  minutes = 0;
+  duration.innerHTML = "00:00";
+}
+
+function timer() {
+  
+
+  if (seconds < 60) {
+    seconds++;
+  } else {
+    minutes++;
+    seconds = 0;
+  }
+
+  duration.innerHTML = `${minutes.toString().padStart(2, "0")}` 
+    + ":" + `${seconds.toString().padStart(2, "0")}`;
 }
