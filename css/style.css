@@ -68,7 +68,6 @@ body {
   border: 1px solid var(--base-ligth-clr);
   max-width: 100%;
   margin-inline: auto;
-  margin-block: 3rem;
 }
 
 /* Primary Header */
@@ -181,6 +180,7 @@ body {
   font-size: var(--fs-600);
   font-weight: 900; 
   color: var(--primary-clr);
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.75);
   padding-top: 2.5rem;
   text-wrap: balance;
 }
@@ -224,44 +224,142 @@ body {
     flex: 1;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Main App */
 .main-application {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-block: 9rem;
+  padding-block: 4rem;
 }
 
 .main-application > * {
   width: 100%;
 }
 
-/* .visualizer {
-  visibility: hidden;
-} */
-
-h2 {
+.app-title {
+  font-size: var(--fs-500);
+  font-weight: 900;
   text-align: center;
+  margin-bottom: 5rem;
+  color: var(--primary-clr);
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.75);
 }
-.recorder {
+
+.app-cover {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.app-cover img{
+  max-width: 12rem;
+  margin-bottom: 2rem;
+}
+
+.app-tip {
+  color: var(--text-clr);
+  font-size: var(--fs-100);
+}
+
+.record {
+  font-size: var(--fs-200);
+  font-weight: 500;
+  color: var(--accent-clr);
+  background-color: transparent;
+  padding: 0.8em 1.4em;
+  margin-block: 1.5rem;
+  border: 1px solid var(--accent-clr);
+  border-radius: 50px;
+  transition: background-color 0.4s;
+  cursor: pointer;
+}
+
+.record:hover {
+  background-color: var(--accent-clr);
+  color: var(--base-dark-clr);
+}
+
+.recorder {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.audios {
+  display: grid;
+  row-gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-top: 4rem;
+}
+
+.clip {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--primary-clr);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* About Section */
 
 .about-section {
-  padding-block: 2rem;
+  padding-block: 4rem;
 }
 
 .about-title-2 {
-  font-size: calc(var(--fs-500) - 0.5rem);
+  font-size: var(--fs-500);
   font-weight: 900;
+  text-align: center;
   color: var(--primary-clr);
-  padding-bottom: 2rem;
-  text-transform: uppercase;
+  margin-bottom: 5rem;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.75);
 }
 
 .about-title-3 {
@@ -316,4 +414,19 @@ footer {
   .hero-title {
     font-size: var(--fs-500);
   }
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.control-btn {
+  fill: var(--accent-clr);
+  background-color: transparent;
+  border: 1px solid var(--accent-clr);
+  border-radius: 50px;
+  padding: 0.3em;
+  aspect-ratio: 1;
+  cursor: pointer;
 }

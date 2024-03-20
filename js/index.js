@@ -1,7 +1,19 @@
-// Audio visualiser
+// Variables
+  // Visualizer
 const containerSize = document.querySelector(".recorder");
 const canvas = document.querySelector(".visualizer");
 const canvasCtx = canvas.getContext("2d");
+  // App
+const recorderSection = document.querySelector(".recorder");
+const appCoverSection = document.querySelector(".app-cover");
+const recordBtn = document.querySelector(".record");
+const stopBtn = document.querySelector(".stop");
+const audiosClips = document.querySelector(".audios");
+  // DB
+let db;
+const indexedDB = window.indexedDB;
+
+// Audio visualiser
 
 function visualizer(stream) {
   canvas.width = containerSize.offsetWidth * 0.8;
@@ -56,13 +68,6 @@ function visualizer(stream) {
 
 
 // Database
-let db;
-
-const recordBtn = document.querySelector(".record");
-const stopBtn = document.querySelector(".stop");
-const audiosClips = document.querySelector(".audios");
-
-const indexedDB = window.indexedDB;
 
 if (!indexedDB) {
   console.log("IndexedDB could not be found in this browser.");
@@ -127,7 +132,7 @@ function showAudioClips() {
       clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
       deleteBtn.innerHTML = "Delete";
-      shareBtn.innerHTML = "Share";
+      shareBtn.innerHTML = "Download";
 
       clipContainer.appendChild(clipLabel);
       clipContainer.appendChild(audio);
@@ -161,24 +166,24 @@ function deleteAudio(e) {
   };
 }
 
-function shareAudio(title, audio) {
-  console.log(audio)
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      url: audio
-    })
-    .then(() => {
-      console.log("Shared successful!");
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  }
-  else {
-    alert("Your system doesn't support sharing these files.");
-  }
-}
+// function downloadAudio(title, audio) {
+//   console.log(audio)
+//   if (navigator.share) {
+//     navigator.share({
+//       title: title,
+//       url: audio
+//     })
+//     .then(() => {
+//       console.log("Shared successful!");
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+//   }
+//   else {
+//     alert("Your system doesn't support sharing these files.");
+//   }
+// }
 
 function updateAudioLabel(e) {
   const newlabel = prompt("Enter a new name for the sound clip");
@@ -220,14 +225,14 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   function onSuccess(stream) {
     const mediaRecorder = new MediaRecorder(stream);
 
-    visualizer(stream);
-
     recordBtn.addEventListener("click", () => {
       mediaRecorder.start();
       console.log(mediaRecorder.state);
       console.log("start recording");
       recordBtn.classList.add("recording");
-      canvas.style.display = "block";
+      appCoverSection.style.display = "none";
+      recorderSection.style.display = "flex";
+      visualizer(stream);
       recordBtn.disabled = true;
       stopBtn.disabled = false;
     });
@@ -236,10 +241,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log("stop recording");
-      canvas.style.visibility = "hidden";
-      stopBtn.disabled = true;
       recordBtn.disabled = false;
-      recordBtn.classList.remove("recording");
     });
 
     // Is triggered every time the recorder is stopped, then gets all the data
@@ -252,7 +254,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
       addAudio(blob, label);
       chunks = [];
-
+      appCoverSection.style.display = "flex";
+      recorderSection.style.display = "none";
       showAudioClips();
     };
 
