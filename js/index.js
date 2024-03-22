@@ -1,3 +1,4 @@
+
 // Variables
 // Visualizer
 const containerSize = document.querySelector(".recorder");
@@ -129,9 +130,10 @@ function showAudioClips() {
     const pointer = e.target.result;
 
     if (pointer) {
-      const clipContainer = document.createElement("article");
+      const clipContainer = document.createElement("div");
       const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
+      const buttonsContainer = document.createElement("div");
       const deleteBtn = document.createElement("button");
       const downloadBtn = document.createElement("a");
 
@@ -140,14 +142,17 @@ function showAudioClips() {
       clipLabel.innerHTML = pointer.value.label;
       clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
-      deleteBtn.innerHTML = "Delete";
-      downloadBtn.innerHTML = "Download";
+      buttonsContainer.classList.add("buttons-container")
+      deleteBtn.classList.add("delete")
+      downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>`;
+      downloadBtn.classList.add("download");
       downloadBtn.setAttribute("download", pointer.value.label);
 
       clipContainer.appendChild(clipLabel);
       clipContainer.appendChild(audio);
-      clipContainer.appendChild(deleteBtn);
-      clipContainer.appendChild(downloadBtn);
+      clipContainer.appendChild(buttonsContainer);
+      buttonsContainer.appendChild(deleteBtn);
+      buttonsContainer.appendChild(downloadBtn);
       audiosClips.appendChild(clipContainer);
 
       audio.controls = true;
@@ -163,12 +168,22 @@ function showAudioClips() {
 }
 
 function deleteAudio(e) {
-  const audioId = parseInt(e.target.parentNode.getAttribute("data-id"));
+
+  if (!confirm("Want to delete this audio?")) {
+    return;
+  }
+
+  const audioId = parseInt(
+    e.target.parentNode.parentNode.getAttribute("data-id")
+  );
+  console.log(audioId)
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.delete(audioId);
   transaction.oncomplete = () => {
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    e.target.parentNode.parentNode.parentNode.removeChild(
+      e.target.parentNode.parentNode
+    );
     console.log("audio removed!");
   };
   transaction.onerror = () => {

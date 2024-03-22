@@ -6,7 +6,7 @@
   <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
   <title>VoiceWave</title>
   <link rel="stylesheet" href="css/style.css">
-  <script  src="js/index.js" defer></script>
+  <script src="js/index.js" defer></script>
   <script src="js/menu.js" defer></script>
 </head>
 <body>
@@ -29,7 +29,7 @@
   <section class="full-height">
     <div class="hero-section">
       <div class="hero-info">
-        <h1 class="hero-title">Let you voice be heard</h1>
+        <h1 class="hero-title">Let your voice be heard</h1>
         <p>Where innovation meets seamless communication. 
           Enjoy the power of clear and crystalline sound 
           with our advanced voice recording technology. 
@@ -55,7 +55,7 @@
       <h2 class="app-title">Voice Recorder</h2>
       <section class="recorder">
         <canvas class="visualizer" width="500px" height="150px" ></canvas>
-        <p class="duration">00:00</p>
+        <div class="duration">00:00</div>
         <div class="control-buttons">
           <button class="pause control-btn">
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
@@ -80,8 +80,12 @@
         <p class="app-tip">To start recording, just press "<b>Start Recording</b>" button!</p>
         <button class="record">Start Recording</button>
       </section>
-
-      <section class="audios"></section>
+    </div>
+  </section>
+  <hr class="divider">
+  <section class="audio-clips full-height">
+    <h2 class="clips-title">Audio Clips</h2>
+    <div class="audios">
     </div>
   </section>
 
