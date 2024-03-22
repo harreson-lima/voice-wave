@@ -1,119 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
-  <title>VoiceWave</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/index.js" defer></script>
-  <script src="js/menu.js" defer></script>
-</head>
-<body>
-  <div class="container">
-    <header id="home">
-    <div class="primary-header">
-      <a href="#" class="logo">Voice<span>Wave</span></a>
-      <button class="hamburger" data-visible="false" aria-controls="primary-nav" aria-expanded="false">
-      </button>
-      <nav>
-        <ul class="primary-nav" id="primary-nav">
-          <li><a class="menu-item" href="#home">Home</a></li>
-          <li><a class="menu-item" href="#main-application">Recorder</a></li>
-          <li><a class="menu-item" href="#about">About us</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Free Web audio recorder">
+    <meta name="keywords" content="voice, recorder, JavaScript, audio">
+    <meta name="author" content="Harreson Lima">
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
+    <title>VoiceWave</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/index.js" defer></script>
+    <script src="js/menu.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header id="home">
+        <div class="primary-header">
+          <a href="#" class="logo">Voice<span>Wave</span></a>
+          <button
+            class="hamburger"
+            data-visible="false"
+            aria-controls="primary-nav"
+            aria-expanded="false"
+          ></button>
+          <nav>
+            <ul class="primary-nav" id="primary-nav">
+              <li><a class="menu-item" href="#home">Home</a></li>
+              <li>
+                <a class="menu-item" href="#main-application">Recorder</a>
+              </li>
+              <li><a class="menu-item" href="#about">About us</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
 
-  <section class="full-height">
-    <div class="hero-section">
-      <div class="hero-info">
-        <h1 class="hero-title">Let your voice be heard</h1>
-        <p>Where innovation meets seamless communication. 
-          Enjoy the power of clear and crystalline sound 
-          with our advanced voice recording technology. 
-          With an elegant and intuitive design, we guarantee an 
-          effortless recording experience, while advanced features offer unparalleled clarity.
-        </p>
-        <a class="hero-action-btn" href="#main-application" >Record Now 
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-            <path d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm-40 280v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Z"/>
-          </svg>
-        </a>
-      </div>
-      <div class="hero-image">
-        <img src="./assets/podcast-flatline.svg" alt="person recording an audio">
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <section class="full-height">
-    <div class="main-application" id="main-application">
-      <h2 class="app-title">Voice Recorder</h2>
-      <section class="recorder">
-        <canvas class="visualizer" width="500px" height="150px" ></canvas>
-        <div class="duration">00:00</div>
-        <div class="control-buttons">
-          <button class="pause control-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-              <path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"/>
-            </svg>
-          </button>
-          <button class="resume control-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-              <path d="M320-200v-560l440 280-440 280Z"/>
-            </svg>
-          </button>
-          <button class="stop control-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-              <path d="M240-240v-480h480v480H240Z"/>
-            </svg>
-          </button>
+      <section class="full-height">
+        <div class="hero-section">
+          <div class="hero-info">
+            <h1 class="hero-title">Let your voice be heard</h1>
+            <p>
+              Where innovation meets seamless communication. Enjoy the power of
+              clear and crystalline sound with our advanced voice recording
+              technology. With an elegant and intuitive design, we guarantee an
+              effortless recording experience, while advanced features offer
+              unparalleled clarity.
+            </p>
+            <a aria-label="got to recording section" class="hero-action-btn" href="#main-application"
+              >Record Now
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+              >
+                <path
+                  d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm-40 280v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div class="hero-image">
+            <img
+              src="./assets/podcast-flatline.svg"
+              alt="person recording an audio"
+            />
+          </div>
         </div>
       </section>
 
-      <section class="app-cover">
-        <img src="./assets/microphone.svg" alt="microphone">
-        <p class="app-tip">To start recording, just press "<b>Start Recording</b>" button!</p>
-        <button class="record">Start Recording</button>
+      <hr class="divider" />
+
+      <section class="full-height">
+        <div class="main-application" id="main-application">
+          <h2 class="app-title">Voice Recorder</h2>
+          <section class="recorder">
+            <canvas class="visualizer" width="500px" height="150px"></canvas>
+            <div class="duration">00:00</div>
+            <div class="control-buttons">
+              <button aria-label="pause recordig" class="pause control-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"
+                  />
+                </svg>
+              </button>
+              <button aria-label="resume recording" class="resume control-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path d="M320-200v-560l440 280-440 280Z" />
+                </svg>
+              </button>
+              <button aria-label="stop recording" class="stop control-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path d="M240-240v-480h480v480H240Z" />
+                </svg>
+              </button>
+            </div>
+          </section>
+
+          <section class="app-cover">
+            <img src="./assets/microphone.svg" alt="microphone" />
+            <p class="app-tip">
+              To start recording, just press "<b>Start Recording</b>" button!
+            </p>
+            <button aria-label="start recording" class="record">Start Recording</button>
+          </section>
+        </div>
+      </section>
+      <hr class="divider" />
+      <section class="audio-clips full-height">
+        <h2 class="clips-title">Audio Clips</h2>
+        <div class="audios"></div>
+      </section>
+
+      <hr class="divider" />
+
+      <section id="about" class="about-section full-height">
+        <h2 class="about-title-2">About Us</h2>
+        <h3 class="about-title-3">About VoiceWave?</h3>
+        <p class="about-info">
+          Welcome to VoiceWave – a pinnacle in audio excellence! We pride
+          ourselves on revolutionizing the art of voice recording, where
+          innovation meets the essence of seamless communication.
+        </p>
+        <h3 class="about-title-3">Our Commitment:</h3>
+        <p class="about-info">
+          At VoiceWave, we are committed to delivering an unparalleled audio
+          experience. Our cutting-edge technology captures the nuances of sound
+          with clarity and precision, ensuring that every recording is a
+          masterpiece.
+        </p>
+        <h3 class="about-title-3">Innovation in Design:</h3>
+        <p class="about-info">
+          Our sleek and intuitive design reflects our dedication to
+          user-friendly experiences. With VoiceWave, effortlessly transform
+          thoughts into recorded brilliance. The future of voice recording
+          technology is here, and it sounds extraordinary.
+        </p>
+        <h3 class="about-title-3">Why VoiceWave:</h3>
+        <ul class="about-list">
+          <li class="about-item">Crystal-clear sound quality.</li>
+          <li class="about-item">Intuitive design for easy use.</li>
+          <li class="about-item">
+            Advanced features for a superior recording experience.
+          </li>
+          <li class="about-item">Elevate your audio journey with VoiceWave.</li>
+        </ul>
+        <p class="about-info">
+          Join us in shaping the future of voice recording – where each wave is
+          a testament to innovation and clarity. <br />VoiceWave - Elevate Your
+          Sound.
+        </p>
       </section>
     </div>
-  </section>
-  <hr class="divider">
-  <section class="audio-clips full-height">
-    <h2 class="clips-title">Audio Clips</h2>
-    <div class="audios">
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <section id="about" class="about-section full-height">
-    <h2 class="about-title-2">About Us</h2>
-    <h3 class="about-title-3">About VoiceWave?</h3> 
-    <p class="about-info">Welcome to VoiceWave – a pinnacle in audio excellence! We pride ourselves on revolutionizing the art of voice recording, where innovation meets the essence of seamless communication.</p>
-    <h3 class="about-title-3">Our Commitment:</h3>
-    <p class="about-info">At VoiceWave, we are committed to delivering an unparalleled audio experience. Our cutting-edge technology captures the nuances of sound with clarity and precision, ensuring that every recording is a masterpiece.</p>
-    <h3 class="about-title-3">Innovation in Design:</h3>
-    <p class="about-info">Our sleek and intuitive design reflects our dedication to user-friendly experiences. With VoiceWave, effortlessly transform thoughts into recorded brilliance. The future of voice recording technology is here, and it sounds extraordinary.</p>
-    <h3 class="about-title-3">Why VoiceWave:</h3>
-    <ul class="about-list">
-      <li class="about-item">Crystal-clear sound quality.</li>
-      <li class="about-item">Intuitive design for easy use.</li>
-      <li class="about-item">Advanced features for a superior recording experience.</li>
-      <li class="about-item">Elevate your audio journey with VoiceWave.</li>
-    </ul>
-    <p class="about-info">Join us in shaping the future of voice recording – where each wave is a testament to innovation and clarity.
-      <br>VoiceWave - Elevate Your Sound.
-    </p>
-  </section>
-</div>
-<footer>
-    <p>© Harreson Lima - 2024.</p>
-</footer>
-  
-</body>
+    <footer>
+      <p>© Harreson Lima - 2024.</p>
+    </footer>
+  </body>
 </html>

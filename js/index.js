@@ -1,4 +1,3 @@
-
 // Variables
 // Visualizer
 const containerSize = document.querySelector(".recorder");
@@ -9,7 +8,7 @@ const recorderSection = document.querySelector(".recorder");
 const appCoverSection = document.querySelector(".app-cover");
 const recordBtn = document.querySelector(".record");
 const pauseBtn = document.querySelector(".pause");
-const resumeBtn = document.querySelector(".resume")
+const resumeBtn = document.querySelector(".resume");
 const stopBtn = document.querySelector(".stop");
 const audiosClips = document.querySelector(".audios");
 // DB
@@ -43,8 +42,6 @@ function visualizer(stream) {
   draw();
 
   function draw() {
-    // console.log(1);
-
     drawVisual = requestAnimationFrame(draw);
 
     analyser.getByteFrequencyData(dataArray);
@@ -88,7 +85,6 @@ openOrCreateDB.onerror = (e) => {
 };
 
 openOrCreateDB.onsuccess = () => {
-  console.log("Successfully opened DB");
   db = openOrCreateDB.result;
   showAudioClips();
 };
@@ -142,8 +138,8 @@ function showAudioClips() {
       clipLabel.innerHTML = pointer.value.label;
       clipLabel.classList.add("label");
       audio.setAttribute("controls", "");
-      buttonsContainer.classList.add("buttons-container")
-      deleteBtn.classList.add("delete")
+      buttonsContainer.classList.add("buttons-container");
+      deleteBtn.classList.add("delete");
       downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>`;
       downloadBtn.classList.add("download");
       downloadBtn.setAttribute("download", pointer.value.label);
@@ -168,7 +164,6 @@ function showAudioClips() {
 }
 
 function deleteAudio(e) {
-
   if (!confirm("Want to delete this audio?")) {
     return;
   }
@@ -176,7 +171,6 @@ function deleteAudio(e) {
   const audioId = parseInt(
     e.target.parentNode.parentNode.getAttribute("data-id")
   );
-  console.log(audioId)
   const transaction = db.transaction(["Audios"], "readwrite");
   const objectStore = transaction.objectStore("Audios");
   objectStore.delete(audioId);
@@ -184,13 +178,11 @@ function deleteAudio(e) {
     e.target.parentNode.parentNode.parentNode.removeChild(
       e.target.parentNode.parentNode
     );
-    console.log("audio removed!");
   };
   transaction.onerror = () => {
     console.error("Delete transaction error");
   };
 }
-
 
 function updateAudioLabel(e) {
   const newlabel = prompt("Enter a new name for the sound clip");
@@ -223,8 +215,6 @@ function updateAudioLabel(e) {
 
 // Checks if browser support getUserMedia
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  console.log("getUserMedia supported!");
-
   const constraints = { audio: true };
   let chunks = [];
 
@@ -234,8 +224,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
     recordBtn.addEventListener("click", () => {
       mediaRecorder.start();
-      console.log(mediaRecorder.state);
-      console.log("start recording");
       recordBtn.classList.add("recording");
       appCoverSection.style.display = "none";
       recorderSection.style.display = "flex";
@@ -246,15 +234,11 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
     stopBtn.addEventListener("click", () => {
       mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log("stop recording");
     });
 
     pauseBtn.addEventListener("click", () => {
-      console.log("enter here");
       mediaRecorder.pause();
       pauseCrono();
-      console.log(mediaRecorder.state);
       pauseBtn.style.display = "none";
       resumeBtn.style.display = "flex";
     });
@@ -262,7 +246,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     resumeBtn.addEventListener("click", () => {
       mediaRecorder.resume();
       startCrono();
-      console.log(mediaRecorder.state);
       resumeBtn.style.display = "none";
       pauseBtn.style.display = "flex";
     });
@@ -270,7 +253,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Is triggered every time the recorder is stopped, then gets all the data
     // and creates a clip element and reset the chunks for the next record
     mediaRecorder.onstop = (e) => {
-      console.log("record stopped");
       const label = prompt("Enter a name for the sound clip");
 
       const blob = new Blob(chunks, { type: "audio/mp3; codecs=opus" });
@@ -315,8 +297,6 @@ function resetCrono() {
 }
 
 function timer() {
-  
-
   if (seconds < 60) {
     seconds++;
   } else {
@@ -324,6 +304,8 @@ function timer() {
     seconds = 0;
   }
 
-  duration.innerHTML = `${minutes.toString().padStart(2, "0")}` 
-    + ":" + `${seconds.toString().padStart(2, "0")}`;
+  duration.innerHTML =
+    `${minutes.toString().padStart(2, "0")}` +
+    ":" +
+    `${seconds.toString().padStart(2, "0")}`;
 }
