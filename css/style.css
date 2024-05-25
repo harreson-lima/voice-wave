@@ -54,10 +54,6 @@ body {
   overflow-x: hidden;
 }
 
-.remove-scroll {
-  overflow: hidden;
-}
-
 .container {
   max-width: clamp(300px, 100vw, 1350px);
   margin-inline: auto;

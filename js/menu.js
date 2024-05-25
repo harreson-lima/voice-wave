@@ -8,12 +8,10 @@ expandBtn.addEventListener("click", () => {
     expandBtn.setAttribute("data-visible", true);
     expandBtn.setAttribute("aria-expanded", true);
     primaryNav.classList.toggle("expand");
-    body.classList.toggle("remove-scroll");
   } else {
     expandBtn.setAttribute("data-visible", false);
     expandBtn.setAttribute("aria-expanded", false);
     primaryNav.classList.toggle("expand");
-    body.classList.toggle("remove-scroll");
   }
 });
 
@@ -22,6 +20,5 @@ itemsNav.forEach(item => {
     expandBtn.setAttribute("data-visible", false);
     expandBtn.setAttribute("aria-expanded", false);
     primaryNav.classList.toggle("expand");
-    body.classList.toggle("remove-scroll");
   })
 });
